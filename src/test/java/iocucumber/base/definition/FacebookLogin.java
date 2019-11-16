@@ -4,14 +4,15 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import iocucumber.base.extension.ExtentReport;
+import iocucumber.base.extension.JunitListener;
 
+import org.junit.runner.Description;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
-import com.aventstack.extentreports.gherkin.model.Feature;
 import com.aventstack.extentreports.gherkin.model.Scenario;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 
@@ -22,14 +23,14 @@ public class FacebookLogin {
 	public  ExtentReports extent;
 	public  ExtentHtmlReporter report;
 	public  ExtentTest feature;
-	public  ExtentTest scenario;	
+	public  ExtentTest scenario;		
 	
 	@Before()
 	public void driverconfiguration(io.cucumber.core.api.Scenario scenariolocal){
 		 WebDriverManager.chromedriver().setup();
 	        driver = new ChromeDriver();
 	        extent = ExtentReport.extent;	
-	        feature = ExtentReport.test;
+	        feature = JunitListener.test;	       
 	        scenario = feature.createNode(Scenario.class, scenariolocal.getName());
 	        driver.get("https://www.facebook.com");
 	        driver.manage().window().maximize();

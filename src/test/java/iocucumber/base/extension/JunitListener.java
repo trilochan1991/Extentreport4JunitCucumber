@@ -8,13 +8,18 @@ import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
 
 import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.gherkin.model.Feature;
 
 public class JunitListener extends RunListener{
 	
 	public static ExtentReports extent;
+	public static ExtentTest test;
 	
 	long startTime;
     long endTime;
+    String classname = null;
+    int i = 0;
  
     @Override
     public void testRunStarted(Description description) throws Exception {
@@ -39,8 +44,20 @@ public class JunitListener extends RunListener{
     @Override
     public void testStarted(Description description) throws Exception {
         //Write the test name when it is started.
-        System.out.println(description.getMethodName() + " test is starting...");
-        
+        System.out.println(description.getMethodName() + " test is starting...");  
+        String actual = null;
+        if(i>0){
+        	actual = description.getClassName();
+        }
+        	
+        if(i == 0){
+        	classname = description.getClassName();
+        	test = extent.createTest(Feature.class, description.getClassName());
+        	i++;
+        }else if(!classname.equals(actual)){
+        	test = extent.createTest(Feature.class, description.getClassName());
+        	classname = description.getClassName();
+        }
     }
  
     @Override
